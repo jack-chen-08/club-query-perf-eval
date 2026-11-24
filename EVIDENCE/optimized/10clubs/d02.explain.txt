@@ -1,0 +1,21 @@
+Aggregate  (cost=5149.10..5149.13 rows=1 width=48) (actual time=1.067..1.068 rows=1 loops=1)
+  Buffers: shared hit=2107
+  ->  Bitmap Heap Scan on enterprises e  (cost=10.60..78.36 rows=300 width=16) (actual time=0.018..0.048 rows=300 loops=1)
+        Recheck Cond: ((club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (deleted_at IS NULL))
+        Heap Blocks: exact=7
+        Buffers: shared hit=11
+        ->  Bitmap Index Scan on ix_ent_club_created  (cost=0.00..10.53 rows=300 width=0) (actual time=0.014..0.014 rows=300 loops=1)
+              Index Cond: (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid)
+              Buffers: shared hit=4
+  SubPlan 1
+    ->  Index Scan using ix_reg_ent_created on registrations r  (cost=0.42..8.45 rows=1 width=0) (actual time=0.002..0.002 rows=0 loops=300)
+          Index Cond: ((enterprise_id = e.id) AND (created_at >= (now() - '90 days'::interval)))
+          Filter: (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid)
+          Buffers: shared hit=1048
+  SubPlan 3
+    ->  Index Scan using ix_reg_ent_created on registrations r_1  (cost=0.42..8.45 rows=1 width=0) (actual time=0.001..0.001 rows=0 loops=300)
+          Index Cond: ((enterprise_id = e.id) AND (created_at >= (now() - '90 days'::interval)))
+          Filter: (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid)
+          Buffers: shared hit=1048
+Planning Time: 0.206 ms
+Execution Time: 1.088 ms

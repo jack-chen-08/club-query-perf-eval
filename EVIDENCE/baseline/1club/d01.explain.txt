@@ -1,0 +1,13 @@
+GroupAggregate  (cost=21.36..23.26 rows=95 width=16) (actual time=0.090..0.100 rows=10 loops=1)
+  Group Key: (date_trunc('month'::text, created_at))
+  Buffers: shared hit=12
+  ->  Sort  (cost=21.36..21.60 rows=95 width=8) (actual time=0.087..0.091 rows=94 loops=1)
+        Sort Key: (date_trunc('month'::text, created_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=12
+        ->  Seq Scan on enterprises e  (cost=0.00..18.24 rows=95 width=8) (actual time=0.007..0.080 rows=94 loops=1)
+              Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (created_at >= (now() - '365 days'::interval)))
+              Rows Removed by Filter: 206
+              Buffers: shared hit=12
+Planning Time: 0.041 ms
+Execution Time: 0.110 ms

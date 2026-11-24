@@ -1,0 +1,26 @@
+Limit  (cost=949.78..949.81 rows=10 width=37) (actual time=5.994..5.998 rows=10 loops=1)
+  Buffers: shared hit=540
+  ->  Sort  (cost=949.78..950.53 rows=300 width=37) (actual time=5.994..5.996 rows=10 loops=1)
+        Sort Key: (count(r.id)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=540
+        ->  HashAggregate  (cost=940.30..943.30 rows=300 width=37) (actual time=5.920..5.951 rows=300 loops=1)
+              Group Key: e.id
+              Batches: 1  Memory Usage: 61kB
+              Buffers: shared hit=540
+              ->  Hash Join  (cost=18.75..911.88 rows=5684 width=45) (actual time=0.078..5.133 rows=5683 loops=1)
+                    Hash Cond: (r.enterprise_id = e.id)
+                    Buffers: shared hit=540
+                    ->  Seq Scan on registrations r  (cost=0.00..878.00 rows=5684 width=32) (actual time=0.007..4.209 rows=5683 loops=1)
+                          Filter: ((deleted_at IS NULL) AND (created_at >= (now() - '365 days'::interval)))
+                          Rows Removed by Filter: 14317
+                          Buffers: shared hit=528
+                    ->  Hash  (cost=15.00..15.00 rows=300 width=29) (actual time=0.068..0.069 rows=300 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 26kB
+                          Buffers: shared hit=12
+                          ->  Seq Scan on enterprises e  (cost=0.00..15.00 rows=300 width=29) (actual time=0.003..0.033 rows=300 loops=1)
+                                Buffers: shared hit=12
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.130 ms
+Execution Time: 6.019 ms

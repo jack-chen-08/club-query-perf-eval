@@ -1,0 +1,16 @@
+Limit  (cost=0.57..435.61 rows=30 width=68) (actual time=0.027..0.555 rows=30 loops=1)
+  Buffers: shared hit=715
+  ->  Nested Loop  (cost=0.57..4844.06 rows=334 width=68) (actual time=0.026..0.553 rows=30 loops=1)
+        Buffers: shared hit=715
+        ->  Index Scan using ix_ctc_club_created on contacts c  (cost=0.29..3559.06 rows=3000 width=71) (actual time=0.006..0.047 rows=228 loops=1)
+              Index Cond: (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid)
+              Buffers: shared hit=31
+        ->  Index Scan using enterprises_pkey on enterprises e  (cost=0.28..0.42 rows=1 width=29) (actual time=0.002..0.002 rows=0 loops=228)
+              Index Cond: (id = c.enterprise_id)
+              Filter: ((c.name ~~* '%138%'::text) OR (c.phone ~~* '%138%'::text) OR (name ~~* '%138%'::text))
+              Rows Removed by Filter: 1
+              Buffers: shared hit=684
+Planning:
+  Buffers: shared hit=14
+Planning Time: 0.440 ms
+Execution Time: 0.569 ms

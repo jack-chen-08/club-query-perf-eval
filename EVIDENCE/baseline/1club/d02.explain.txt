@@ -1,0 +1,23 @@
+Aggregate  (cost=956.18..956.20 rows=1 width=48) (actual time=4.287..4.289 rows=1 loops=1)
+  Buffers: shared hit=540
+  ->  Hash Left Join  (cost=938.13..954.68 rows=300 width=16) (actual time=4.192..4.269 rows=300 loops=1)
+        Hash Cond: (e.id = r.enterprise_id)
+        Buffers: shared hit=540
+        ->  Seq Scan on enterprises e  (cost=0.00..15.75 rows=300 width=16) (actual time=0.008..0.049 rows=300 loops=1)
+              Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid))
+              Buffers: shared hit=12
+        ->  Hash  (cost=936.34..936.34 rows=143 width=16) (actual time=4.181..4.182 rows=146 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 15kB
+              Buffers: shared hit=528
+              ->  Unique  (cost=935.37..936.34 rows=143 width=16) (actual time=4.137..4.165 rows=146 loops=1)
+                    Buffers: shared hit=528
+                    ->  Sort  (cost=935.37..935.86 rows=194 width=16) (actual time=4.136..4.143 rows=194 loops=1)
+                          Sort Key: r.enterprise_id
+                          Sort Method: quicksort  Memory: 29kB
+                          Buffers: shared hit=528
+                          ->  Seq Scan on registrations r  (cost=0.00..928.00 rows=194 width=16) (actual time=0.019..4.106 rows=194 loops=1)
+                                Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (created_at >= (now() - '90 days'::interval)))
+                                Rows Removed by Filter: 19806
+                                Buffers: shared hit=528
+Planning Time: 0.109 ms
+Execution Time: 4.311 ms

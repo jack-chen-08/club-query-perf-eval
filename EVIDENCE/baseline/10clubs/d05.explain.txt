@@ -1,0 +1,36 @@
+Limit  (cost=8311.13..8311.15 rows=10 width=37) (actual time=35.220..36.234 rows=10 loops=1)
+  Buffers: shared hit=4982
+  ->  Sort  (cost=8311.13..8318.63 rows=3000 width=37) (actual time=35.219..36.232 rows=10 loops=1)
+        Sort Key: (count(r.id)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=4982
+        ->  Finalize HashAggregate  (cost=8216.30..8246.30 rows=3000 width=37) (actual time=34.552..35.840 rows=3000 loops=1)
+              Group Key: e.id
+              Batches: 1  Memory Usage: 625kB
+              Buffers: shared hit=4982
+              ->  Gather  (cost=7556.30..8186.30 rows=6000 width=37) (actual time=31.970..33.989 rows=8836 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=4982
+                    ->  Partial HashAggregate  (cost=6556.30..6586.30 rows=3000 width=37) (actual time=28.786..29.134 rows=2945 loops=3)
+                          Group Key: e.id
+                          Batches: 1  Memory Usage: 625kB
+                          Buffers: shared hit=4982
+                          Worker 0:  Batches: 1  Memory Usage: 625kB
+                          Worker 1:  Batches: 1  Memory Usage: 625kB
+                          ->  Hash Join  (cost=131.50..6436.71 rows=23918 width=45) (actual time=1.276..24.639 rows=19040 loops=3)
+                                Hash Cond: (r.enterprise_id = e.id)
+                                Buffers: shared hit=4982
+                                ->  Parallel Seq Scan on registrations r  (cost=0.00..6242.33 rows=23918 width=32) (actual time=0.009..19.226 rows=19040 loops=3)
+                                      Filter: ((deleted_at IS NULL) AND (created_at >= (now() - '365 days'::interval)))
+                                      Rows Removed by Filter: 47627
+                                      Buffers: shared hit=4784
+                                ->  Hash  (cost=94.00..94.00 rows=3000 width=29) (actual time=1.227..1.228 rows=3000 loops=3)
+                                      Buckets: 4096  Batches: 1  Memory Usage: 212kB
+                                      Buffers: shared hit=192
+                                      ->  Seq Scan on enterprises e  (cost=0.00..94.00 rows=3000 width=29) (actual time=0.012..0.568 rows=3000 loops=3)
+                                            Buffers: shared hit=192
+Planning:
+  Buffers: shared hit=9
+Planning Time: 0.150 ms
+Execution Time: 36.276 ms

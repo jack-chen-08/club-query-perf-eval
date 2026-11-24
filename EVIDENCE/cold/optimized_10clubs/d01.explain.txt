@@ -1,0 +1,13 @@
+GroupAggregate  (cost=8.92..10.62 rows=85 width=16) (actual time=0.034..0.044 rows=10 loops=1)
+  Group Key: (date_trunc('month'::text, created_at))
+  Buffers: shared hit=4
+  ->  Sort  (cost=8.92..9.13 rows=85 width=8) (actual time=0.031..0.036 rows=93 loops=1)
+        Sort Key: (date_trunc('month'::text, created_at))
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=4
+        ->  Index Only Scan using ix_ent_club_created on enterprises e  (cost=0.28..6.20 rows=85 width=8) (actual time=0.007..0.027 rows=93 loops=1)
+              Index Cond: ((club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (created_at >= (now() - '365 days'::interval)))
+              Heap Fetches: 0
+              Buffers: shared hit=4
+Planning Time: 0.054 ms
+Execution Time: 0.056 ms

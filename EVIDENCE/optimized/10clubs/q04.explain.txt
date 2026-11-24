@@ -1,0 +1,7 @@
+Limit  (cost=0.42..128.38 rows=50 width=73) (actual time=0.015..0.082 rows=50 loops=1)
+  Buffers: shared hit=52
+  ->  Index Scan using ix_sop_todo on sop_steps s  (cost=0.42..32436.32 rows=12674 width=73) (actual time=0.015..0.078 rows=50 loops=1)
+        Index Cond: ((club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (status = 'pending'::text))
+        Buffers: shared hit=52
+Planning Time: 0.044 ms
+Execution Time: 0.091 ms

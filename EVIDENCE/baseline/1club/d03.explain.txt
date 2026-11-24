@@ -1,0 +1,23 @@
+Aggregate  (cost=857.82..857.83 rows=1 width=40) (actual time=5.885..5.887 rows=1 loops=1)
+  Buffers: shared hit=552
+  ->  HashAggregate  (cost=850.73..854.98 rows=189 width=52) (actual time=5.812..5.870 rows=189 loops=1)
+        Group Key: e.id
+        Batches: 1  Memory Usage: 64kB
+        Buffers: shared hit=552
+        ->  Hash Right Join  (cost=38.36..819.23 rows=6300 width=36) (actual time=0.163..4.838 rows=6396 loops=1)
+              Hash Cond: (r.event_id = e.id)
+              Buffers: shared hit=552
+              ->  Seq Scan on registrations r  (cost=0.00..728.00 rows=20000 width=32) (actual time=0.003..2.785 rows=20000 loops=1)
+                    Filter: (deleted_at IS NULL)
+                    Buffers: shared hit=528
+              ->  Hash  (cost=36.00..36.00 rows=189 width=20) (actual time=0.157..0.158 rows=189 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 18kB
+                    Buffers: shared hit=24
+                    ->  Seq Scan on events e  (cost=0.00..36.00 rows=189 width=20) (actual time=0.007..0.136 rows=189 loops=1)
+                          Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (starts_at >= (now() - '365 days'::interval)))
+                          Rows Removed by Filter: 411
+                          Buffers: shared hit=24
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.147 ms
+Execution Time: 5.919 ms

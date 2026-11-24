@@ -1,0 +1,12 @@
+Limit  (cost=2474.85..2474.97 rows=50 width=73) (actual time=10.325..10.331 rows=50 loops=1)
+  Buffers: shared hit=1312
+  ->  Sort  (cost=2474.85..2505.92 rows=12428 width=73) (actual time=10.325..10.327 rows=50 loops=1)
+        Sort Key: due_at
+        Sort Method: top-N heapsort  Memory: 36kB
+        Buffers: shared hit=1312
+        ->  Seq Scan on sop_steps s  (cost=0.00..2062.00 rows=12428 width=73) (actual time=0.009..8.255 rows=12470 loops=1)
+              Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (status = 'pending'::text))
+              Rows Removed by Filter: 37530
+              Buffers: shared hit=1312
+Planning Time: 0.051 ms
+Execution Time: 10.343 ms

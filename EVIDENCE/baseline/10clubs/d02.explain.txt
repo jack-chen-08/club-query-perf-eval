@@ -1,0 +1,32 @@
+Aggregate  (cost=7581.33..7581.35 rows=1 width=48) (actual time=18.343..20.191 rows=1 loops=1)
+  Buffers: shared hit=681 read=4239
+  ->  Hash Left Join  (cost=7477.54..7579.83 rows=300 width=16) (actual time=17.981..20.166 rows=300 loops=1)
+        Hash Cond: (e.id = r.enterprise_id)
+        Buffers: shared hit=681 read=4239
+        ->  Seq Scan on enterprises e  (cost=0.00..101.50 rows=300 width=16) (actual time=0.006..0.311 rows=300 loops=1)
+              Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid))
+              Rows Removed by Filter: 2700
+              Buffers: shared hit=64
+        ->  Hash  (cost=7475.29..7475.29 rows=180 width=16) (actual time=17.971..19.818 rows=146 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 15kB
+              Buffers: shared hit=617 read=4239
+              ->  Unique  (cost=7453.61..7475.29 rows=180 width=16) (actual time=17.888..19.792 rows=146 loops=1)
+                    Buffers: shared hit=617 read=4239
+                    ->  Gather Merge  (cost=7453.61..7474.84 rows=180 width=16) (actual time=17.888..19.775 rows=171 loops=1)
+                          Workers Planned: 2
+                          Workers Launched: 2
+                          Buffers: shared hit=617 read=4239
+                          ->  Unique  (cost=6453.59..6454.04 rows=90 width=16) (actual time=15.116..15.129 rows=57 loops=3)
+                                Buffers: shared hit=617 read=4239
+                                ->  Sort  (cost=6453.59..6453.81 rows=90 width=16) (actual time=15.114..15.118 rows=65 loops=3)
+                                      Sort Key: r.enterprise_id
+                                      Sort Method: quicksort  Memory: 27kB
+                                      Buffers: shared hit=617 read=4239
+                                      Worker 0:  Sort Method: quicksort  Memory: 26kB
+                                      Worker 1:  Sort Method: quicksort  Memory: 25kB
+                                      ->  Parallel Seq Scan on registrations r  (cost=0.00..6450.67 rows=90 width=16) (actual time=0.027..15.038 rows=65 loops=3)
+                                            Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (created_at >= (now() - '90 days'::interval)))
+                                            Rows Removed by Filter: 66602
+                                            Buffers: shared hit=545 read=4239
+Planning Time: 0.113 ms
+Execution Time: 20.217 ms

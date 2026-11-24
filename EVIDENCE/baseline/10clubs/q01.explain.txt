@@ -1,0 +1,12 @@
+Limit  (cost=116.62..116.64 rows=8 width=61) (actual time=0.339..0.341 rows=8 loops=1)
+  Buffers: shared hit=64
+  ->  Sort  (cost=116.62..116.64 rows=8 width=61) (actual time=0.339..0.339 rows=8 loops=1)
+        Sort Key: created_at DESC
+        Sort Method: quicksort  Memory: 26kB
+        Buffers: shared hit=64
+        ->  Seq Scan on enterprises e  (cost=0.00..116.50 rows=8 width=61) (actual time=0.006..0.299 rows=8 loops=1)
+              Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (industry = 'manufacturing'::text) AND (status = 'renewing'::text))
+              Rows Removed by Filter: 2992
+              Buffers: shared hit=64
+Planning Time: 0.045 ms
+Execution Time: 0.349 ms

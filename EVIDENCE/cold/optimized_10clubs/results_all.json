@@ -1,0 +1,171 @@
+{
+ "label": "cold_optimized_10clubs",
+ "warm_runs": 5,
+ "queries": {
+  "q01": {
+   "title": "会员企业列表筛选",
+   "cold_ms": 2.634,
+   "warm_median_ms": 0.545,
+   "rows": 8,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Limit",
+    "Sort",
+    "Bitmap Heap Scan",
+    "Bitmap Index Scan"
+   ],
+   "shared_hit": 8,
+   "shared_read": 0
+  },
+  "q02": {
+   "title": "联系人关键词搜索",
+   "cold_ms": 4.909,
+   "warm_median_ms": 1.493,
+   "rows": 30,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Limit",
+    "Nested Loop",
+    "Index Scan",
+    "Index Scan"
+   ],
+   "shared_hit": 715,
+   "shared_read": 0
+  },
+  "q03": {
+   "title": "活动报名名单",
+   "cold_ms": 5.737,
+   "warm_median_ms": 1.432,
+   "rows": 35,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Sort",
+    "Hash Join",
+    "Nested Loop",
+    "Bitmap Heap Scan",
+    "Bitmap Index Scan",
+    "Index Scan",
+    "Hash",
+    "Seq Scan"
+   ],
+   "shared_hit": 207,
+   "shared_read": 0
+  },
+  "q04": {
+   "title": "SOP 待办列表",
+   "cold_ms": 3.126,
+   "warm_median_ms": 0.96,
+   "rows": 50,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Limit",
+    "Index Scan"
+   ],
+   "shared_hit": 52,
+   "shared_read": 0
+  },
+  "q05": {
+   "title": "商机看板分组计数",
+   "cold_ms": 3.209,
+   "warm_median_ms": 1.2,
+   "rows": 6,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Aggregate",
+    "Index Only Scan"
+   ],
+   "shared_hit": 37,
+   "shared_read": 0
+  },
+  "d01": {
+   "title": "驾驶舱·月度新增会员",
+   "cold_ms": 2.47,
+   "warm_median_ms": 0.541,
+   "rows": 10,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Aggregate",
+    "Sort",
+    "Index Only Scan"
+   ],
+   "shared_hit": 4,
+   "shared_read": 0
+  },
+  "d02": {
+   "title": "驾驶舱·活跃会员占比",
+   "cold_ms": 10.085,
+   "warm_median_ms": 1.74,
+   "rows": 1,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Aggregate",
+    "Bitmap Heap Scan",
+    "Bitmap Index Scan",
+    "Index Scan",
+    "Index Scan"
+   ],
+   "shared_hit": 2107,
+   "shared_read": 0
+  },
+  "d03": {
+   "title": "驾驶舱·活动平均上座率",
+   "cold_ms": 7.312,
+   "warm_median_ms": 1.584,
+   "rows": 1,
+   "target_ms": 200.0,
+   "pass": true,
+   "plan_nodes": [
+    "Aggregate",
+    "Nested Loop",
+    "Bitmap Heap Scan",
+    "Bitmap Index Scan",
+    "Aggregate",
+    "Index Only Scan"
+   ],
+   "shared_hit": 604,
+   "shared_read": 0
+  },
+  "d04": {
+   "title": "驾驶舱·跨会所商机漏斗",
+   "cold_ms": 58.453,
+   "warm_median_ms": 42.254,
+   "rows": 6,
+   "target_ms": 2000.0,
+   "pass": true,
+   "plan_nodes": [
+    "Sort",
+    "Aggregate",
+    "Sort",
+    "Seq Scan"
+   ],
+   "shared_hit": 1240,
+   "shared_read": 0
+  },
+  "d05": {
+   "title": "驾驶舱·跨会所报名 TOP10",
+   "cold_ms": 16.469,
+   "warm_median_ms": 10.799,
+   "rows": 10,
+   "target_ms": 2000.0,
+   "pass": true,
+   "plan_nodes": [
+    "Nested Loop",
+    "Limit",
+    "Sort",
+    "Aggregate",
+    "Index Only Scan",
+    "Index Scan"
+   ],
+   "shared_hit": 316,
+   "shared_read": 0
+  }
+ },
+ "clubs": 10
+}

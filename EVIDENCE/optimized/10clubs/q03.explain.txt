@@ -1,0 +1,28 @@
+Sort  (cost=523.35..523.43 rows=33 width=73) (actual time=0.756..0.759 rows=35 loops=1)
+  Sort Key: r.created_at
+  Sort Method: quicksort  Memory: 28kB
+  Buffers: shared hit=207
+  ->  Hash Join  (cost=136.46..522.51 rows=33 width=73) (actual time=0.644..0.745 rows=35 loops=1)
+        Hash Cond: (r.enterprise_id = e.id)
+        Buffers: shared hit=207
+        ->  Nested Loop  (cost=4.96..390.93 rows=33 width=76) (actual time=0.016..0.109 rows=35 loops=1)
+              Buffers: shared hit=143
+              ->  Bitmap Heap Scan on registrations r  (cost=4.68..128.86 rows=33 width=73) (actual time=0.011..0.034 rows=35 loops=1)
+                    Recheck Cond: ((event_id = '7e1989b2-a8ff-5ba2-af3b-cd890e977f04'::uuid) AND (deleted_at IS NULL))
+                    Heap Blocks: exact=35
+                    Buffers: shared hit=38
+                    ->  Bitmap Index Scan on ix_reg_event_created  (cost=0.00..4.67 rows=33 width=0) (actual time=0.006..0.006 rows=35 loops=1)
+                          Index Cond: (event_id = '7e1989b2-a8ff-5ba2-af3b-cd890e977f04'::uuid)
+                          Buffers: shared hit=3
+              ->  Index Scan using contacts_pkey on contacts c  (cost=0.29..7.94 rows=1 width=35) (actual time=0.002..0.002 rows=1 loops=35)
+                    Index Cond: (id = r.contact_id)
+                    Buffers: shared hit=105
+        ->  Hash  (cost=94.00..94.00 rows=3000 width=29) (actual time=0.625..0.626 rows=3000 loops=1)
+              Buckets: 4096  Batches: 1  Memory Usage: 212kB
+              Buffers: shared hit=64
+              ->  Seq Scan on enterprises e  (cost=0.00..94.00 rows=3000 width=29) (actual time=0.003..0.275 rows=3000 loops=1)
+                    Buffers: shared hit=64
+Planning:
+  Buffers: shared hit=12
+Planning Time: 0.264 ms
+Execution Time: 0.791 ms

@@ -1,0 +1,13 @@
+Sort  (cost=260.15..260.17 rows=6 width=47) (actual time=1.526..1.526 rows=6 loops=1)
+  Sort Key: stage
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=160
+  ->  HashAggregate  (cost=260.00..260.07 rows=6 width=47) (actual time=1.519..1.521 rows=6 loops=1)
+        Group Key: stage
+        Batches: 1  Memory Usage: 24kB
+        Buffers: shared hit=160
+        ->  Seq Scan on opportunities o  (cost=0.00..222.50 rows=5000 width=15) (actual time=0.006..0.797 rows=5000 loops=1)
+              Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid))
+              Buffers: shared hit=160
+Planning Time: 0.042 ms
+Execution Time: 1.541 ms

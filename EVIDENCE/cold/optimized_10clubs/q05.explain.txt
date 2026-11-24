@@ -1,0 +1,9 @@
+GroupAggregate  (cost=0.41..449.04 rows=6 width=47) (actual time=0.141..0.876 rows=6 loops=1)
+  Group Key: stage
+  Buffers: shared hit=37
+  ->  Index Only Scan using ix_opp_club_stage on opportunities o  (cost=0.41..412.11 rows=4915 width=15) (actual time=0.007..0.470 rows=5000 loops=1)
+        Index Cond: (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid)
+        Heap Fetches: 0
+        Buffers: shared hit=37
+Planning Time: 0.048 ms
+Execution Time: 0.889 ms

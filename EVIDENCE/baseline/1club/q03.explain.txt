@@ -1,0 +1,30 @@
+Sort  (cost=983.99..984.07 rows=32 width=74) (actual time=2.336..2.339 rows=35 loops=1)
+  Sort Key: r.created_at
+  Sort Method: quicksort  Memory: 28kB
+  Buffers: shared hit=636
+  ->  Hash Join  (cost=19.04..983.19 rows=32 width=74) (actual time=0.139..2.318 rows=35 loops=1)
+        Hash Cond: (r.enterprise_id = e.id)
+        Buffers: shared hit=636
+        ->  Nested Loop  (cost=0.29..964.36 rows=32 width=77) (actual time=0.063..2.232 rows=35 loops=1)
+              Buffers: shared hit=624
+              ->  Seq Scan on registrations r  (cost=0.00..778.00 rows=32 width=74) (actual time=0.056..2.141 rows=35 loops=1)
+                    Filter: ((deleted_at IS NULL) AND (event_id = '7e1989b2-a8ff-5ba2-af3b-cd890e977f04'::uuid))
+                    Rows Removed by Filter: 19965
+                    Buffers: shared hit=528
+              ->  Memoize  (cost=0.29..6.18 rows=1 width=35) (actual time=0.002..0.002 rows=1 loops=35)
+                    Cache Key: r.contact_id
+                    Cache Mode: logical
+                    Hits: 3  Misses: 32  Evictions: 0  Overflows: 0  Memory Usage: 5kB
+                    Buffers: shared hit=96
+                    ->  Index Scan using contacts_pkey on contacts c  (cost=0.28..6.17 rows=1 width=35) (actual time=0.002..0.002 rows=1 loops=32)
+                          Index Cond: (id = r.contact_id)
+                          Buffers: shared hit=96
+        ->  Hash  (cost=15.00..15.00 rows=300 width=29) (actual time=0.073..0.073 rows=300 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 26kB
+              Buffers: shared hit=12
+              ->  Seq Scan on enterprises e  (cost=0.00..15.00 rows=300 width=29) (actual time=0.003..0.034 rows=300 loops=1)
+                    Buffers: shared hit=12
+Planning:
+  Buffers: shared hit=12
+Planning Time: 0.175 ms
+Execution Time: 2.361 ms

@@ -1,0 +1,21 @@
+Nested Loop  (cost=2524.56..2603.38 rows=10 width=37) (actual time=12.905..12.927 rows=10 loops=1)
+  Buffers: shared hit=316
+  ->  Limit  (cost=2524.28..2524.30 rows=10 width=24) (actual time=12.893..12.894 rows=10 loops=1)
+        Buffers: shared hit=286
+        ->  Sort  (cost=2524.28..2531.78 rows=3000 width=24) (actual time=12.892..12.893 rows=10 loops=1)
+              Sort Key: (count(*)) DESC
+              Sort Method: top-N heapsort  Memory: 26kB
+              Buffers: shared hit=286
+              ->  HashAggregate  (cost=2429.45..2459.45 rows=3000 width=24) (actual time=12.372..12.624 rows=3000 loops=1)
+                    Group Key: r.enterprise_id
+                    Batches: 1  Memory Usage: 369kB
+                    Buffers: shared hit=286
+                    ->  Index Only Scan using ix_reg_created_ent on registrations r  (cost=0.42..2143.00 rows=57290 width=16) (actual time=0.010..5.151 rows=57118 loops=1)
+                          Index Cond: (created_at >= (now() - '365 days'::interval))
+                          Heap Fetches: 0
+                          Buffers: shared hit=286
+  ->  Index Scan using enterprises_pkey on enterprises e  (cost=0.28..7.90 rows=1 width=29) (actual time=0.003..0.003 rows=1 loops=10)
+        Index Cond: (id = r.enterprise_id)
+        Buffers: shared hit=30
+Planning Time: 0.139 ms
+Execution Time: 12.962 ms

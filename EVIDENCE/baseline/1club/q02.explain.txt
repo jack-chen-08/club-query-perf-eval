@@ -1,0 +1,23 @@
+Limit  (cost=190.49..190.56 rows=30 width=68) (actual time=3.879..3.883 rows=30 loops=1)
+  Buffers: shared hit=124
+  ->  Sort  (cost=190.49..191.70 rows=485 width=68) (actual time=3.878..3.880 rows=30 loops=1)
+        Sort Key: c.created_at DESC
+        Sort Method: top-N heapsort  Memory: 30kB
+        Buffers: shared hit=124
+        ->  Hash Join  (cost=18.75..176.16 rows=485 width=68) (actual time=0.080..3.790 rows=398 loops=1)
+              Hash Cond: (c.enterprise_id = e.id)
+              Join Filter: ((c.name ~~* '%138%'::text) OR (c.phone ~~* '%138%'::text) OR (e.name ~~* '%138%'::text))
+              Rows Removed by Join Filter: 2602
+              Buffers: shared hit=124
+              ->  Seq Scan on contacts c  (cost=0.00..149.50 rows=3000 width=71) (actual time=0.005..0.513 rows=3000 loops=1)
+                    Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid))
+                    Buffers: shared hit=112
+              ->  Hash  (cost=15.00..15.00 rows=300 width=29) (actual time=0.068..0.069 rows=300 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 26kB
+                    Buffers: shared hit=12
+                    ->  Seq Scan on enterprises e  (cost=0.00..15.00 rows=300 width=29) (actual time=0.003..0.032 rows=300 loops=1)
+                          Buffers: shared hit=12
+Planning:
+  Buffers: shared hit=6
+Planning Time: 0.379 ms
+Execution Time: 3.903 ms

@@ -1,0 +1,18 @@
+Limit  (cost=16815.87..16821.70 rows=50 width=73) (actual time=37.609..39.821 rows=50 loops=1)
+  Buffers: shared hit=266 read=12328
+  ->  Gather Merge  (cost=16815.87..18015.99 rows=10286 width=73) (actual time=37.608..39.816 rows=50 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=266 read=12328
+        ->  Sort  (cost=15815.85..15828.70 rows=5143 width=73) (actual time=34.978..34.982 rows=39 loops=3)
+              Sort Key: due_at
+              Sort Method: top-N heapsort  Memory: 36kB
+              Buffers: shared hit=266 read=12328
+              Worker 0:  Sort Method: top-N heapsort  Memory: 36kB
+              Worker 1:  Sort Method: top-N heapsort  Memory: 35kB
+              ->  Parallel Seq Scan on sop_steps s  (cost=0.00..15645.00 rows=5143 width=73) (actual time=0.031..33.846 rows=4158 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (club_id = '95f43839-3d07-5441-b6ae-974b22c61bc1'::uuid) AND (status = 'pending'::text))
+                    Rows Removed by Filter: 162508
+                    Buffers: shared hit=192 read=12328
+Planning Time: 0.056 ms
+Execution Time: 39.846 ms

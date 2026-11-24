@@ -1,0 +1,16 @@
+Sort  (cost=579.85..579.86 rows=6 width=55) (actual time=2.653..2.654 rows=6 loops=1)
+  Sort Key: (sum(amount_cents)) DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=160
+  ->  GroupAggregate  (cost=517.19..579.77 rows=6 width=55) (actual time=2.067..2.648 rows=6 loops=1)
+        Group Key: stage
+        Buffers: shared hit=160
+        ->  Sort  (cost=517.19..529.69 rows=5000 width=31) (actual time=1.946..2.126 rows=5000 loops=1)
+              Sort Key: stage, club_id
+              Sort Method: quicksort  Memory: 486kB
+              Buffers: shared hit=160
+              ->  Seq Scan on opportunities o  (cost=0.00..210.00 rows=5000 width=31) (actual time=0.007..0.733 rows=5000 loops=1)
+                    Filter: (deleted_at IS NULL)
+                    Buffers: shared hit=160
+Planning Time: 0.048 ms
+Execution Time: 2.723 ms

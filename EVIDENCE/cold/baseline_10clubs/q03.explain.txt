@@ -1,0 +1,28 @@
+Gather Merge  (cost=7018.41..7021.68 rows=28 width=74) (actual time=11.949..14.513 rows=35 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=418 read=4592
+  ->  Sort  (cost=6018.39..6018.42 rows=14 width=74) (actual time=9.354..9.357 rows=12 loops=3)
+        Sort Key: r.created_at
+        Sort Method: quicksort  Memory: 28kB
+        Buffers: shared hit=418 read=4592
+        Worker 0:  Sort Method: quicksort  Memory: 25kB
+        Worker 1:  Sort Method: quicksort  Memory: 25kB
+        ->  Nested Loop  (cost=0.57..6018.12 rows=14 width=74) (actual time=5.495..9.326 rows=12 loops=3)
+              Buffers: shared hit=402 read=4592
+              ->  Nested Loop  (cost=0.29..5935.89 rows=14 width=77) (actual time=5.493..9.300 rows=12 loops=3)
+                    Buffers: shared hit=297 read=4592
+                    ->  Parallel Seq Scan on registrations r  (cost=0.00..5824.71 rows=14 width=74) (actual time=5.490..9.258 rows=12 loops=3)
+                          Filter: ((deleted_at IS NULL) AND (event_id = '7e1989b2-a8ff-5ba2-af3b-cd890e977f04'::uuid))
+                          Rows Removed by Filter: 66655
+                          Buffers: shared hit=192 read=4592
+                    ->  Index Scan using contacts_pkey on contacts c  (cost=0.29..7.94 rows=1 width=35) (actual time=0.003..0.003 rows=1 loops=35)
+                          Index Cond: (id = r.contact_id)
+                          Buffers: shared hit=105
+              ->  Index Scan using enterprises_pkey on enterprises e  (cost=0.28..5.87 rows=1 width=29) (actual time=0.002..0.002 rows=1 loops=35)
+                    Index Cond: (id = r.enterprise_id)
+                    Buffers: shared hit=105
+Planning:
+  Buffers: shared hit=12
+Planning Time: 0.175 ms
+Execution Time: 14.563 ms
