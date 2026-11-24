@@ -22,6 +22,10 @@ snapshots, and measured before/after optimizations.
 
 完整数据、逐条瓶颈与冷热对比见 [REPORT.md](REPORT.md)。
 
+测量噪声 / Measurement noise：每条查询是 100 次连续执行的 p95，亚毫秒级查询的重复
+测量会在第二位小数上漂 ±0.01–0.02 ms。本仓库所有数字以 `EVIDENCE/*/results.json`
+为准，对外摘要若出现 0.58 与 0.57 这类差异，属同一轮数据的取整先后，不是两次不同结论。
+
 ## 目录结构 / Layout
 
 ```text
@@ -29,7 +33,7 @@ sql/001_schema.sql                 表结构（软删除、org_id/site_id、金�
 sql/002_indexes_baseline.sql       基线：仅主键与自然键（上游票据交付时的状态）
 sql/queries/q01..q05,d01..d05.sql  10 条待测查询
 sql/opt/010_indexes_optimized.sql  优化索引层（12 个部分索引 + pg_trgm）
-sql/opt/queries/                   2 处 SQL 改写（d02 EXISTS、d03 LATERAL、d05 预聚合）
+sql/opt/queries/                   3 处 SQL 改写（d02 EXISTS、d03 LATERAL、d05 预聚合）
 scripts/gen_data.py                确定性数据生成器（默认 seed=42）
 scripts/init_db.py                 建表 / 装索引 / ANALYZE + VACUUM
 scripts/bench.py                   热缓存基准，100 次/条，p50/p95 + EXPLAIN 落盘
