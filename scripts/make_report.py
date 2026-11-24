@@ -143,7 +143,7 @@ def main() -> int:
 
     lines += [
         "",
-        "索引全部建在 `sql/opt/010_indexes_optimized.sql`，两处改写见 `sql/opt/queries/`：",
+        "索引全部建在 `sql/opt/010_indexes_optimized.sql`，三处改写见 `sql/opt/queries/`：",
         "",
         "* 索引一律 `WHERE deleted_at IS NULL` 的部分索引——软删除行不进任何列表与指标，",
         "  索引因此更小、更少死元组。",

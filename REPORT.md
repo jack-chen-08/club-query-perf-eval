@@ -105,7 +105,7 @@
 | d04 | 跨会所商机漏斗需读全部 5 万行（业务上无过滤条件），只能做覆盖索引 | 覆盖部分索引 (stage) INCLUDE (amount_cents, club_id)，走 index-only scan | 44.913 | 46.355 | **1.0×** |
 | d05 | 跨会所报名 TOP10 把 20 万条报名先与 3,000 家企业关联再排序 | 改写为“先按企业聚合取 TOP10，再关联名称” + (created_at) INCLUDE (enterprise_id) | 36.918 | 11.933 | **3.1×** |
 
-索引全部建在 `sql/opt/010_indexes_optimized.sql`，两处改写见 `sql/opt/queries/`：
+索引全部建在 `sql/opt/010_indexes_optimized.sql`，三处改写见 `sql/opt/queries/`：
 
 * 索引一律 `WHERE deleted_at IS NULL` 的部分索引——软删除行不进任何列表与指标，
   索引因此更小、更少死元组。
